@@ -27,7 +27,7 @@ It helps small businesses to increase their brand visibility. With the help of t
 ## 📚 What we learned
 - Learned more about Deso, CochroachDB, and GitHub.  Learned a lot more about Tailwind CSS and responsive designs.
 
-##📚 What's next for later
+## 📚 What's next for later
 - Scaling to hundreds of thousands of users and UX improvements!
 - Making the code Open Source and engaging different People.
 
