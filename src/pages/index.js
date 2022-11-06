@@ -3,7 +3,6 @@ import Navbar from "./components/navbar";
 // import landingIllustration from "./assets/landingIllustration.png";
 import landingIllustration from "./assets/landing.png";
 import { useRouter } from "next/router";
-import { FaLinkedinIn } from 'react-icons/fa';
 import noAds from "./assets/moni.png";
 import revenue from "./assets/stats.png";
 
