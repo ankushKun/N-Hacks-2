@@ -137,7 +137,7 @@ export default function Create() {
     const hash = response.submittedTransactionResponse.TxnHashHex;
     console.log(hash);
 
-    alert("Posted at https://diamondapp.com/posts/" + hash);
+    alert("Your photo has been posted on DeSo");
 
     var deso = new Deso();
     var request = {
@@ -154,6 +154,7 @@ export default function Create() {
     console.log(response);
 
     alert("Your post has been minted as an NFT");
+    window.open("https://diamondapp.com/posts/" + hash, '_blank');
 
     // const postResponse = await createPost({
     //   // royalty: royalty,
@@ -179,6 +180,7 @@ export default function Create() {
       "file": img,
       "jwt": await deso.identity.getJwt(undefined)
     };
+
     const response = await deso.media.uploadImage(request);
     console.log(response.ImageURL);
     setImgUrl(response.ImageURL);
