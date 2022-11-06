@@ -4,7 +4,6 @@ import TopBtnBar from "./TopBtnBar";
 import TextEditor from "./TextEditor";
 // import { uploadToIpfs, uploadToIpfsFromUrl } from "../../utils/ipfs";
 import Navbar from "../components/navbar";
-import tezIcon from "../assets/tezos.svg";
 import Image from "next/image";
 import DarkModeContext from "../../Context/DarkModeContext";
 import Deso from "deso-protocol";

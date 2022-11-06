@@ -5,9 +5,7 @@ import landingIllustration from "./assets/landing.png";
 import { useRouter } from "next/router";
 import { FaLinkedinIn } from 'react-icons/fa';
 import noAds from "./assets/moni.png";
-import goal from "./assets/goal.png";
 import revenue from "./assets/stats.png";
-import keyLock from "./assets/keyLock.svg";
 
 import DarkModeContext from "../Context/DarkModeContext";
 
