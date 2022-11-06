@@ -38,10 +38,17 @@ export default function Create() {
 
   // Event Listeners
   const onCoverInputChange = async (e) => {
+    if (!localStorage.getItem("deso_user_key")) {
+      var deso = new Deso();
+      const request = 3;
+      const response = await deso.identity.login(request);
+      console.log(response);
+    }
+
     const img = e.target.files[0];
     console.log("upload called", img);
     // setStatus("upload clicked")
-    const deso = new Deso();
+    var deso = new Deso();
     const request = {
       "UserPublicKeyBase58Check": localStorage.getItem("deso_user_key"),
       "file": img,
@@ -97,13 +104,20 @@ export default function Create() {
       alert("Content should be atleast 10 characters long");
       return;
     }
-    if (titleText.length <= 2) {
-      alert("Title should be atleast 2 characters long");
+    if (titleText.length <= 3) {
+      alert("Title should be atleast 3 characters long");
       return;
     }
     if (!postCover) {
       alert("You must set a post cover");
       return;
+    }
+
+    if (!localStorage.getItem("deso_user_key")) {
+      var deso = new Deso();
+      const request = 3;
+      const response = await deso.identity.login(request);
+      console.log(response);
     }
 
     const body = "# " + titleText + "\n" + bodyText;

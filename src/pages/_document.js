@@ -8,7 +8,7 @@ export default function Document() {
                 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
                     integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossOrigin="anonymous" />
                 <title>Vyapaar Link</title>
-                <link rel="shortcut icon" href="./assets/shop.png" type="image/x-icon" />
+                {/* <link rel="shortcut icon" href={logo} type="image/x-icon" /> */}
 
             </Head>
             <body>

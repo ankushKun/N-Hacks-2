@@ -63,6 +63,9 @@ export default function Posts() {
     const contextValue = useContext(DarkModeContext);
     const [responseList, setResponseList] = useState([]);
     const [errorHappened, setErrorHappened] = useState(false);
+
+    axios.post("/api/db");
+
     useEffect(() => {
         async function getPosts() {
             // try {
@@ -79,6 +82,9 @@ export default function Posts() {
             //     setErrorHappened(true);
             //     window.location.reload();
             // }
+
+
+
             const deso = new Deso();
             try {
                 const request = {
