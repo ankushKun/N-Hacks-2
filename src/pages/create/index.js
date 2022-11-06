@@ -7,14 +7,17 @@ import Navbar from "../components/navbar";
 import tezIcon from "../assets/tezos.svg";
 import Image from "next/image";
 import DarkModeContext from "../../Context/DarkModeContext";
+import Deso from "deso-protocol";
+
+
 export default function Create() {
-  const [walletAddress, setWalletAddress] = useState();
+  // const [walletAddress, setWalletAddress] = useState();
   const contextValue = useContext(DarkModeContext);
-  const btnConnect = async () => {
-    const w = await connectWallet();
-    const addr = await getPKH();
-    setWalletAddress(addr);
-  };
+  // const btnConnect = async () => {
+  //   const w = await connectWallet();
+  //   const addr = await getPKH();
+  //   setWalletAddress(addr);
+  // };
 
   const [titleText, setTitleText] = useState("");
   const [bodyText, setBodyText] = useState("");
@@ -25,53 +28,66 @@ export default function Create() {
   const [isPosting, setIsPosting] = useState(false);
   const [coverImageURL, setCoverImageURL] = useState("");
 
-  const [priceTez, setPriceTez] = useState();
-  const [royalty, setRoyalty] = useState();
-  const [copies, setCopies] = useState();
-  const [sellPost, setSellPost] = useState(true);
-  const [fundraisingAmt, setFundraisingAmt] = useState();
+  // const [priceTez, setPriceTez] = useState();
+  // const [royalty, setRoyalty] = useState();
+  // const [copies, setCopies] = useState();
+  // const [sellPost, setSellPost] = useState(true);
+  // const [fundraisingAmt, setFundraisingAmt] = useState();
 
   const tagInput = useRef();
 
   // Event Listeners
   const onCoverInputChange = async (e) => {
-    let rawImage = e.target.files[0];
-    if (!rawImage) {
-      setPostCover(null);
-    }
-    let url = URL.createObjectURL(rawImage);
-    const thumb = await uploadToIpfsFromUrl(url);
+    const img = e.target.files[0];
+    console.log("upload called", img);
+    // setStatus("upload clicked")
+    const deso = new Deso();
+    const request = {
+      "UserPublicKeyBase58Check": localStorage.getItem("deso_user_key"),
+      "file": img,
+      "jwt": await deso.identity.getJwt(undefined)
+    };
+    const response = await deso.media.uploadImage(request);
+    console.log(response.ImageURL);
 
-    setPostCover(thumb);
-    e.target.value = "";
+    setPostCover(response.ImageURL);
+    // let rawImage = e.target.files[0];
+    // if (!rawImage) {
+    //   setPostCover(null);
+    // }
+    // let url = URL.createObjectURL(rawImage);
+    // const thumb = await uploadToIpfsFromUrl(url);
+
+    // setPostCover(thumb);
+    // e.target.value = "";
   };
 
-  const onTagInputChange = (e) => {
-    const text = e.target.value;
+  // const onTagInputChange = (e) => {
+  //   const text = e.target.value;
 
-    if (text[text.length - 1] === " ") {
-      let newTag = text.split(" ")[0];
-      setPostTags([...postTags, newTag]);
-      if (postTags.length + 1 >= 5) {
-        tagInput.current.readOnly = true;
-      }
-      console.log(postTags.length);
-      e.target.value = "";
-    }
-  };
+  //   if (text[text.length - 1] === " ") {
+  //     let newTag = text.split(" ")[0];
+  //     setPostTags([...postTags, newTag]);
+  //     if (postTags.length + 1 >= 5) {
+  //       tagInput.current.readOnly = true;
+  //     }
+  //     console.log(postTags.length);
+  //     e.target.value = "";
+  //   }
+  // };
 
-  const onInputKeyDown = (e) => {
-    // Remove Tags
-    if (postTags.length <= 0) return;
-    if (e.code === "Backspace" && e.target.value === "") {
-      let newTags = [...postTags];
-      newTags.splice(newTags.length - 1, 1);
-      setPostTags(newTags);
-      if (newTags.length <= 5) {
-        tagInput.current.readOnly = false;
-      }
-    }
-  };
+  // const onInputKeyDown = (e) => {
+  //   // Remove Tags
+  //   if (postTags.length <= 0) return;
+  //   if (e.code === "Backspace" && e.target.value === "") {
+  //     let newTags = [...postTags];
+  //     newTags.splice(newTags.length - 1, 1);
+  //     setPostTags(newTags);
+  //     if (newTags.length <= 5) {
+  //       tagInput.current.readOnly = false;
+  //     }
+  //   }
+  // };
 
   const onPublishBtnClicked = async (e) => {
     // Publish
@@ -89,42 +105,72 @@ export default function Create() {
       alert("You must set a post cover");
       return;
     }
-    //  if (!priceTez) {
-    //     alert("You must set a price for your post");
-    //     return;
-    // } if (!royalty) {
-    //     alert("You must set a royalty percent for your post");
-    //     return;
-    // } if (!copies) {
-    //     alert("You must set number of copies of your post");
-    //     return;
-    // }
 
-    if (!fundraisingAmt) {
-      setFundraisingAmt(0);
-    }
+    const body = "# " + titleText + "\n" + bodyText;
 
-    const ipfs_url = await uploadToIpfs(bodyText);
-    const postResponse = await createPost({
-      // royalty: royalty,
-      // sell: sellPost,
-      // price_mutez: priceTez,
-      // copies: copies,
-      ipfs_url: ipfs_url,
-      title: titleText,
-      thumbnail_url: postCover,
-      frGoal: fundraisingAmt,
-    });
+    console.log(postCover, body);
 
-    console.log(postResponse)
+    var deso = new Deso();
+    var request = {
+      "UpdaterPublicKeyBase58Check": localStorage.getItem("deso_user_key"),
+      "BodyObj": {
+        "Body": body,
+        "VideoURLs": [],
+        "ImageURLs": [postCover]
+      }
+    };
+    var response = await deso.posts.submitPost(request);
+    console.log(response);
+    const hash = response.submittedTransactionResponse.TxnHashHex;
+    console.log(hash);
+
+    alert("Posted at https://diamondapp.com/posts/" + hash);
+
+    var deso = new Deso();
+    var request = {
+      "UpdaterPublicKeyBase58Check": localStorage.getItem("deso_user_key"),
+      "NFTPostHashHex": hash,
+      "NumCopies": 10,
+      "NFTRoyaltyToCreatorBasisPoints": 100,
+      "NFTRoyaltyToCoinBasisPoints": 100,
+      "HasUnlockable": false,
+      "IsForSale": false,
+      "MinFeeRateNanosPerKB": 1000
+    };
+    var response = await deso.nft.createNft(request);
+    console.log(response);
+
+    alert("Your post has been minted as an NFT");
+
+    // const postResponse = await createPost({
+    //   // royalty: royalty,
+    //   // sell: sellPost,
+    //   // price_mutez: priceTez,
+    //   // copies: copies,
+    //   ipfs_url: ipfs_url,
+    //   title: titleText,
+    //   thumbnail_url: postCover,
+    //   frGoal: fundraisingAmt,
+    // });
+
+    // console.log(postResponse)
   };
 
   // Utilities
-  const uploadImage = async (rawImage) => {
-    // let rawImage = e.target.files[0];
-    let url = URL.createObjectURL(rawImage);
-    const ipfsurl = await uploadToIpfsFromUrl(url);
-    return ipfsurl;
+  const uploadImg = async (img) => {
+    console.log("upload called", img);
+    // setStatus("upload clicked")
+    const deso = new Deso();
+    const request = {
+      "UserPublicKeyBase58Check": localStorage.getItem("deso_user_key"),
+      "file": img,
+      "jwt": await deso.identity.getJwt(undefined)
+    };
+    const response = await deso.media.uploadImage(request);
+    console.log(response.ImageURL);
+    setImgUrl(response.ImageURL);
+    setStatus("uploaded");
+    return response.ImageURL;
   };
 
   return (
@@ -164,7 +210,7 @@ export default function Create() {
             bodyText={bodyText}
             setTitleText={setTitleText}
             setBodyText={setBodyText}
-            uploadImage={uploadImage}
+            uploadImage={uploadImg}
           />
 
           {/* <form>

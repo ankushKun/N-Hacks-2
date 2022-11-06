@@ -4,9 +4,9 @@ import Navbar from "./components/navbar";
 import landingIllustration from "./assets/landing.png";
 import { useRouter } from "next/router";
 import { FaLinkedinIn } from 'react-icons/fa';
-import noAds from "./assets/noAds.svg";
+import noAds from "./assets/moni.png";
 import goal from "./assets/goal.png";
-import revenue from "./assets/revenue.svg";
+import revenue from "./assets/stats.png";
 import keyLock from "./assets/keyLock.svg";
 
 import DarkModeContext from "../Context/DarkModeContext";
@@ -101,12 +101,12 @@ export default function Landing() {
                         <div className='flex flex-wrap'>
                             <div className='w-5/6 sm:w-1/2 p-6'>
                                 <h3 className='text-3xl  font-bold leading-none mb-3'>
-                                    Earn Revenue
+                                    Increase Brand Visiblity
                                 </h3>
                                 <p
                                     className={`${contextValue.isDark ? "lessLightText" : "lessDarkText"
                                         }  mb-8`}>
-                                    Earn revenue through your selfie NFT sales and social tippings!
+                                    It helps small businesses to increase their brand visibility.
                                     <br />
                                     <br />
                                 </p>
@@ -117,20 +117,17 @@ export default function Landing() {
                         </div>
                         <div className='flex flex-wrap flex-col-reverse sm:flex-row'>
                             <div className='w-full sm:w-1/3 p-6 '>
-                                {/* <img src={noAds}></img> */}
                                 <Image src={noAds} />
                             </div>
                             <div className='w-full sm:w-1/2 p-6 mt-6'>
                                 <div className='align-middle'>
                                     <h3 className='text-3xl  font-bold leading-none mb-3'>
-                                        No Ads!
+                                        Trade Pictures as NFT
                                     </h3>
                                     <p
                                         className={`${contextValue.isDark ? "lessLightText" : "lessDarkText"
                                             }  `}>
-                                        Ads and annoying popups are such a web2 thing. With VyapaarLink,
-                                        you can earn without time consuming ads and
-                                        popups!
+                                        Share the pictures of yours as NFT and trade them and earn revenue
                                         <br />
                                         <br />
                                     </p>
